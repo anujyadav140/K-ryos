@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Web Socket Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+
+        let socket = new WebSocket("ws://localhost:4000/room/ws-message");
+        console.log("attempting websocket connection . . .");
+        socket.onopen = () => {
+        console.log("successfully connected . . .");
+        };
+
+        socket.onclose = (event) => {
+            console.log("socket closed connection: ", event);
+        };
+
+        socket.onerror = (error) => {
+            console.log("socket error: ", error);
+        };
+
+        function sendMessage() {
+            const message = document.querySelector('input').value;
+            socket.send(message);
+            form.reset();
+        }
+    </script>
+</head>
+
+<body>
+    <form action="" id="my_form">
+    <label for="message">write a message:</label>
+    <input type="text" placeholder="..." />
+    <button onclick="sendMessage()" type="submit">Send!</button>
+    </form>
+</body>
+
+</html>

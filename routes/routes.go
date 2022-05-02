@@ -14,6 +14,7 @@ func RoomRoute(router *mux.Router) {
 
 func MessageRoute(router *mux.Router) {
 	router.HandleFunc("/room/message", controllers.CreateMessage()).Methods("POST")
+	router.HandleFunc("/room/ws-message", controllers.WsMessage())
 	router.HandleFunc("/room/messages", controllers.GetMessages()).Methods("GET")
-	router.HandleFunc("/room/messages/{id}", controllers.GetMessagesByID()).Methods("GET")
+	router.HandleFunc("/room/messages/{RoomID}", controllers.GetMessagesByID()).Methods("GET")
 }
