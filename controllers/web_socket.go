@@ -18,7 +18,6 @@ var upgrader = websocket.Upgrader{
 type socketPayload struct {
 	Content string
 	Room int
-	Randi int
 }
 
 var payload socketPayload
