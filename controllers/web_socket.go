@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"koryos/configs"
+	"koryos/models"
 	"log"
 	"net/http"
 
@@ -12,6 +14,8 @@ var upgrader = websocket.Upgrader{
     WriteBufferSize: 1024,
 }
 
+var socketMessage string
+
 func reader(conn *websocket.Conn) {
 	for {
 		messageType, p, err := conn.ReadMessage()
@@ -21,7 +25,8 @@ func reader(conn *websocket.Conn) {
 		}
 
 		log.Println(string(p))
-		
+
+		socketMessage = string(p)
 
 		if err := conn.WriteMessage(messageType, p); err != nil {
 			log.Println(err)
@@ -38,6 +43,18 @@ func WsMessage() http.HandlerFunc {
 
 		if err != nil {
 			log.Println(err)
+		}
+
+		newMessage := models.Message{
+            Content: socketMessage,
+            RoomID:    1,
+        }
+
+		createdMessage := configs.DB.Create(&newMessage)
+		createdMessageErr := createdMessage.Error
+		
+		if createdMessageErr != nil {
+			log.Println(createdMessageErr)
 		}
 
 		reader(wsMessage)

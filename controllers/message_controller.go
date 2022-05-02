@@ -33,8 +33,8 @@ func CreateMessage() http.HandlerFunc {
 		}
 
 		//insert the request into the database
-		createdRoom := configs.DB.Create(&message)
-		err := createdRoom.Error
+		createdMessage := configs.DB.Create(&message)
+		err := createdMessage.Error
 
 		//if insertion fails
 		if err != nil {
