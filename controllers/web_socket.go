@@ -10,8 +10,8 @@ import (
 )
 
 var upgrader = websocket.Upgrader{
-    ReadBufferSize:  1024,
-    WriteBufferSize: 1024,
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
 }
 
 var socketMessage string
@@ -46,16 +46,18 @@ func WsMessage() http.HandlerFunc {
 		}
 
 		newMessage := models.Message{
-            Content: socketMessage,
-            RoomID:    1,
-        }
-
-		createdMessage := configs.DB.Create(&newMessage)
-		createdMessageErr := createdMessage.Error
-		
-		if createdMessageErr != nil {
-			log.Println(createdMessageErr)
+			Content: socketMessage,
+			RoomID:  1,
 		}
+
+		if newMessage.Content != "" {
+			createdMessage := configs.DB.Create(&newMessage)
+			createdMessageErr := createdMessage.Error
+			if createdMessageErr != nil {
+				log.Println(createdMessageErr)
+			}
+			socketMessage = ""
+		} else {log.Println("EMPTY MESSAGE")}
 
 		reader(wsMessage)
 	}
