@@ -24,7 +24,10 @@
 
         function sendMessage() {
             const message = document.querySelector('input').value;
-            socket.send(message);
+            const room  = 0;
+            const payload = {content: message, room: 1}
+            socket.send(JSON.stringify(payload));
+            console.log(JSON.stringify(payload));
             form.reset();
         }
     </script>

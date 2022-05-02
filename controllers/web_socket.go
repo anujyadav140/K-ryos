@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"koryos/configs"
 	"koryos/models"
 	"log"
@@ -14,7 +15,13 @@ var upgrader = websocket.Upgrader{
 	WriteBufferSize: 1024,
 }
 
-var socketMessage string
+type socketPayload struct {
+	Content string
+	Room int
+	Randi int
+}
+
+var payload socketPayload
 
 func reader(conn *websocket.Conn) {
 	for {
@@ -22,11 +29,12 @@ func reader(conn *websocket.Conn) {
 		if err != nil {
 			log.Println(err)
 			return
+		} 
+		
+		if err := json.Unmarshal(p, &payload); err != nil {
+			log.Println("failed to unmarshal:", err)
 		}
-
-		log.Println(string(p))
-
-		socketMessage = string(p)
+		log.Printf("Content: %s, Room_id: %b", payload.Content, payload.Room)
 
 		if err := conn.WriteMessage(messageType, p); err != nil {
 			log.Println(err)
@@ -46,8 +54,8 @@ func WsMessage() http.HandlerFunc {
 		}
 
 		newMessage := models.Message{
-			Content: socketMessage,
-			RoomID:  1,
+			Content: payload.Content,
+			RoomID:  payload.Room,
 		}
 
 		if newMessage.Content != "" {
@@ -56,7 +64,7 @@ func WsMessage() http.HandlerFunc {
 			if createdMessageErr != nil {
 				log.Println(createdMessageErr)
 			}
-			socketMessage = ""
+			newMessage.Content = ""
 		} else {log.Println("EMPTY MESSAGE")}
 
 		reader(wsMessage)
