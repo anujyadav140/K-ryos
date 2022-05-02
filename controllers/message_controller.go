@@ -77,7 +77,7 @@ func GetMessagesByID() http.HandlerFunc {
 		params := mux.Vars(r)
 		var messages []models.Message
 
-		findMessages := configs.DB.Find(&messages, params["RoomID"])
+		findMessages := configs.DB.Find(&messages, "room_id = ?", params["RoomID"])
 		err := findMessages.Error
 
 		if err != nil {
