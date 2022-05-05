@@ -6,6 +6,8 @@ import (
 	"koryos/models"
 	"koryos/responses"
 	"net/http"
+	"time"
+
 	"github.com/gorilla/mux"
 )
 
@@ -51,6 +53,7 @@ func CreateRoom() http.HandlerFunc {
 
 func ListRooms() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		defer timeTrack(time.Now(), "Fetching list rooms info ...")
 		var room []models.Room
 
 		//get rooms from the database
@@ -93,3 +96,4 @@ func DeleteRoom() http.HandlerFunc {
 		}
 	}
 }
+

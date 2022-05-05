@@ -6,6 +6,7 @@ import (
 	"koryos/models"
 	"koryos/responses"
 	"net/http"
+	"time"
 
 	"github.com/go-playground/validator"
 	"github.com/gorilla/mux"
@@ -74,6 +75,7 @@ func GetMessages() http.HandlerFunc {
 
 func GetMessagesByID() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		defer timeTrack(time.Now(), "Fetching messages by id info ...")
 		params := mux.Vars(r)
 		var messages []models.Message
 

@@ -6,6 +6,7 @@ import (
 	"koryos/routes"
 	"log"
 	"net/http"
+
 	"github.com/gorilla/mux"
 )
 
@@ -27,5 +28,6 @@ func NewRouter() *mux.Router {
     r := mux.NewRouter()
     routes.RoomRoute(r)
 	routes.MessageRoute(r)
+	routes.DualRoute(r)
     return r
 }

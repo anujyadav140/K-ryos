@@ -18,3 +18,7 @@ func MessageRoute(router *mux.Router) {
 	router.HandleFunc("/room/messages", controllers.GetMessages()).Methods("GET")
 	router.HandleFunc("/room/messages/{RoomID}", controllers.GetMessagesByID()).Methods("GET")
 }
+
+func DualRoute(router *mux.Router) {
+	router.HandleFunc("/dual/{RoomID}", controllers.DualController()).Methods("GET")
+}
