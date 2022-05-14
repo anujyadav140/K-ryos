@@ -28,17 +28,27 @@
             const payload = {content: message, room: 1}
             socket.send(JSON.stringify(payload));
             console.log(JSON.stringify(payload));
-            form.reset();
+            displayMessage(payload.content);
+            // form.reset();
+        }
+
+        function displayMessage(msg) {
+            const appendMsg = document.getElementById('appendMsg');
+            const message = document.createElement('message');
+            message.textContent = msg + "\n";
+            appendMsg.append(message);
         }
     </script>
 </head>
 
 <body>
-    <form action="" id="my_form">
+    <!-- <form id="my_form"> -->
     <label for="message">write a message:</label>
     <input type="text" placeholder="..." />
     <button onclick="sendMessage()" type="submit">Send!</button>
-    </form>
+    <!-- </form> -->
+
+    <div id="appendMsg"></div><br>
 </body>
 
 </html>
